@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -72,9 +73,13 @@ fun Home(navController: NavController) {
 
     Scaffold(
         topBar = {
-            TopAppBar(
+            TopAppBar(modifier = Modifier
+                .shadow(15.dp, shapes.extraLarge)
+                .background(colorScheme.tertiary, shapes.large)
+                ,
                 title = {
-                    Text("삐약", fontFamily = cafe24ssurround, color = colorScheme.primaryContainer)
+                    Text("삐약:                           ", fontFamily = cafe24ssurround, color = colorScheme.primaryContainer)
+
                 },
                 actions = {
                     IconButton(onClick = { /* 캘린더 아이콘 버튼이 눌렸을 때의 동작 추가 */ }) {
@@ -115,45 +120,51 @@ fun Home(navController: NavController) {
             BottomAppBar(
                 contentColor = colorScheme.tertiary,
                 containerColor = colorScheme.tertiary,
-                content = {
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceAround,
+                modifier = Modifier.shadow(15.dp, shapes.extraLarge)
+                    .width(400.dp)
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(
+                        onClick = { navController.navigate("Home") },
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
+                            .size(60.dp)
+                            .background(colorScheme.primaryContainer, shapes.large)
                     ) {
-                        IconButton(onClick = { navController.navigate("Home") },
-                            modifier = Modifier
-                                .size(60.dp)
-                                .background(colorScheme.primaryContainer, shapes.large)
-                        ) {
-                            Icon(Icons.Default.Home, contentDescription = null)
-                        }
-                        IconButton(onClick = { navController.navigate("Myprofile") },
-                                modifier = Modifier
-                                .size(60.dp)
+                        Icon(Icons.Default.Home, contentDescription = null)
+                    }
+                    IconButton(
+                        onClick = { navController.navigate("Myprofile") },
+                        modifier = Modifier
+                            .size(60.dp)
                             .background(colorScheme.primaryContainer, shapes.large)
 
-                        ) {
-                            Icon(Icons.Default.Face, contentDescription = null)
-                        }
-                        IconButton(onClick = { showDialog = true },
-                            modifier = Modifier
-                                .size(60.dp)
-                                .background(colorScheme.primaryContainer, shapes.large)
-                        ) {
-                            Icon(Icons.Default.PlayArrow, contentDescription = null)
-                        }
-                        IconButton(onClick = { navController.navigate("famillyList") },
-                            modifier = Modifier
-                                .size(60.dp)
-                                .background(colorScheme.primaryContainer, shapes.large)
-                            ) {
-                            Icon(Icons.Default.List, contentDescription = null)
-                        }
+                    ) {
+                        Icon(Icons.Default.Face, contentDescription = null)
+                    }
+                    IconButton(
+                        onClick = { showDialog = true },
+                        modifier = Modifier
+                            .size(60.dp)
+                            .background(colorScheme.primaryContainer, shapes.large)
+                    ) {
+                        Icon(Icons.Default.PlayArrow, contentDescription = null)
+                    }
+                    IconButton(
+                        onClick = { navController.navigate("famillyList") },
+                        modifier = Modifier
+                            .size(60.dp)
+                            .background(colorScheme.primaryContainer, shapes.large)
+                    ) {
+                        Icon(Icons.Default.List, contentDescription = null)
                     }
                 }
-            )
+            }
         }
     )
 
