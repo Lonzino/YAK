@@ -113,7 +113,7 @@ fun FamillyList(navController: NavController) {
                         ) {
                             Icon(Icons.Default.Face, contentDescription = null)
                         }
-                        IconButton(onClick = { showDialog = true },
+                        IconButton(onClick = { navController.navigate("Rec") },
                             modifier = Modifier
                                 .size(60.dp)
                                 .background(MaterialTheme.colorScheme.primaryContainer, MaterialTheme.shapes.large)

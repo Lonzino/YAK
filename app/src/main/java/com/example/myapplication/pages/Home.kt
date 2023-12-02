@@ -1,5 +1,6 @@
 package com.example.myapplication.pages
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -48,12 +50,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
+import com.example.myapplication.R
 import com.example.myapplication.ui.theme.cafe24ssurround
 
 @Immutable
@@ -95,33 +103,88 @@ fun Home(navController: NavController) {
 
                 },
                 actions = {
-                    IconButton(onClick = { /*isCalendarVisible = true*/ }) {
+                    IconButton(onClick = { /* 캘린더 아이콘 버튼이 눌렸을 때의 동작 추가 */
+                    }) {
                         Icon(Icons.Default.DateRange, contentDescription = null, tint = colorScheme.tertiaryContainer)
                     }
                 }
             )
         },
+
         content = { padding ->
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .wrapContentSize(Alignment.Center)
-                    .padding(16.dp)
-                    .border(5.dp, colorScheme.tertiary, shapes.large)
-                    .aspectRatio(1f)
-            ) {
-                MedicineList(medicineList = medicineList,
+            Column(
+             modifier = Modifier
+                 .padding(padding)
+                 .fillMaxSize(),
+                verticalArrangement = Arrangement.Center
+            )
+            {
+                Row(
                     modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(16.dp)
-                )
+                        .fillMaxWidth()
+                ) {
+                    Spacer(modifier = Modifier.width(270.dp))
+
+                    Image(
+                        painter = painterResource(id = R.drawable.side_bbiyo),
+                        contentDescription = "Flipped Image",
+                        modifier = Modifier
+                            .size(100.dp)
+                            .graphicsLayer(
+                                scaleX = -1f
+                            )
+                    )
+
+                }
+                Box(
+                    modifier = Modifier
+                        .padding(20.dp)
+                        .wrapContentSize(Alignment.Center)
+                        .border(5.dp, colorScheme.tertiary, shapes.large)
+                        .aspectRatio(1f)
+
+                    ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.pills),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .wrapContentSize(Alignment.Center)
+                    )
+                    MedicineList(
+                        medicineList = medicineList,
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(16.dp)
+                    )
+                }
+
+                Row {
+
+                    Image(
+                        painter = painterResource(id = R.drawable.pool1),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(60.dp)
+                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.pool2),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(60.dp)
+                    )
+                }
             }
         },
+
+
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { isDialogOpen = true },
                 shape = shapes.small,
-                contentColor = colorScheme.onPrimary,
+                contentColor = colorScheme.primary,
                 modifier = Modifier
                     .size(48.dp)
                     .shadow(4.dp, shapes.small)
@@ -131,7 +194,7 @@ fun Home(navController: NavController) {
         },
         bottomBar = {
             BottomAppBar(
-                contentColor = colorScheme.tertiaryContainer,
+                contentColor = colorScheme.tertiary,
                 containerColor = colorScheme.tertiary
             ) {
                 Row(
@@ -159,7 +222,7 @@ fun Home(navController: NavController) {
                         Icon(Icons.Default.Face, contentDescription = null)
                     }
                     IconButton(
-                        onClick = { showDialog = true },
+                        onClick = { navController.navigate("Rec") },
                         modifier = Modifier
                             .size(60.dp)
                             .background(colorScheme.primaryContainer, shapes.large)
@@ -198,6 +261,9 @@ fun Home(navController: NavController) {
             onDismiss = { showDialog = false }
         )
     }
+
+
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -317,8 +383,17 @@ fun MedicineList(medicineList: List<Medicine>, modifier: Modifier = Modifier) {
         // 저장된 약 정보를 리스트로 표시
         LazyColumn {
             items(medicineList) { medicine ->
-                Text("약 이름: ${medicine.name}, 투약 시간: ${medicine.time}, 투약 횟수: ${medicine.frequency}")
+                Text(
+                    text = "약 이름: ${medicine.name}, 투약 시간: ${medicine.time}, 투약 횟수: ${medicine.frequency}",
+                    fontFamily = cafe24ssurround
+                )
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Preview() {
+    Home(navController = NavController(LocalContext.current))
 }

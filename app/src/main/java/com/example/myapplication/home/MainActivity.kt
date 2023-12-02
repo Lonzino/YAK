@@ -15,6 +15,7 @@ import com.example.compose.AppTheme
 import com.example.myapplication.pages.FamillyList
 import com.example.myapplication.pages.Home
 import com.example.myapplication.pages.Myprofile
+import com.example.myapplication.pages.Rec
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +44,8 @@ class MainActivity : ComponentActivity() {
                     composable("FamillyList") { FamillyList(navController) }
 
                     composable("Myprofile") { Myprofile(navController) }
+
+                    composable("Rec") { Rec(navController) }
 
                 }
 
