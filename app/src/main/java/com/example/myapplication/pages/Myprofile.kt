@@ -2,16 +2,18 @@ package com.example.myapplication.pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -33,15 +35,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.wear.compose.material.ContentAlpha
 import com.example.myapplication.R
 import com.example.myapplication.ui.theme.cafe24ssurround
 
@@ -55,7 +54,7 @@ fun Myprofile( navController: NavController) {
       topBar = {
          TopAppBar(
             title = {
-               Text("내 정보", fontFamily = cafe24ssurround)
+               Text("내 정보", fontFamily = cafe24ssurround, color = MaterialTheme.colorScheme.tertiaryContainer)
             },
             actions = {
                IconButton(onClick = { /* 캘린더 아이콘 버튼이 눌렸을 때의 동작 추가 */
@@ -68,21 +67,33 @@ fun Myprofile( navController: NavController) {
       },
       content = {padding ->
 
-         MyProfileContent(
-            selectedImageUri = "selectedImageUri",
-            onImageSelected = { uri -> "selectedImageUri"},
-            modifier = Modifier.padding(padding)
+         LazyColumn(
+            modifier = Modifier
                .fillMaxSize()
                .padding(16.dp)
-               .clip(MaterialTheme.shapes.medium)
-               .background(MaterialTheme.colorScheme.surface)
+         ) {
+            item {
+               // Profile picture and name
+               ProfileHeader()
+            }
 
-         )
+            item {
+               // Summary
+               ProfileSummary()
+            }
+
+            item {
+               // Photo gallery
+               PhotoGallery()
+            }
+         }
 
 
       },
       bottomBar = {
          BottomAppBar(
+            contentColor = MaterialTheme.colorScheme.tertiaryContainer,
+            containerColor = MaterialTheme.colorScheme.tertiary,
             content = {
                Row(
                   horizontalArrangement = Arrangement.SpaceAround,
@@ -136,78 +147,66 @@ fun Myprofile( navController: NavController) {
    }
 
 }
-
 @Composable
-fun MyProfileContent(selectedImageUri: String?, onImageSelected: (String) -> Unit, modifier: Modifier = Modifier) {
+fun ProfileHeader() {
    Column(
-      modifier = modifier
-         .fillMaxSize()
-         .padding(16.dp)
-
+      modifier = Modifier
+         .fillMaxWidth()
+         .padding(16.dp),
+      horizontalAlignment = Alignment.CenterHorizontally,
+      verticalArrangement = Arrangement.Center
    ) {
-      // Profile Image
-      ProfileImage(
-         selectedImageUri = selectedImageUri,
-         onImageSelected = onImageSelected,
+
+      Spacer(modifier = Modifier.height(56.dp))
+
+
+         // Background color for the lower half of the circle
+         Box(
+            modifier = Modifier
+               .fillMaxSize()
+               .background(MaterialTheme.colorScheme.onSurface)
+               .clip(CircleShape)
+         )
+         Image(
+            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+            contentDescription = null,
+            modifier = Modifier
+               .size(200.dp) // 조절 가능한 크기
+               .clip(CircleShape)
+               .background(MaterialTheme.colorScheme.primary)
+         )
+
+         Spacer(modifier = Modifier.height(16.dp))
+
+         Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+         ) {
+            Text(
+               text = "Your Name",
+               style = MaterialTheme.typography.headlineLarge,
+               modifier = Modifier
+                  .padding(8.dp)
+            )
+         }
+
+   }
+}
+   @Composable
+   fun ProfileSummary() {
+      Text(
+         text = "Your summary or bio goes here.",
+         style = MaterialTheme.typography.titleLarge,
          modifier = Modifier
-            .size(120.dp)
-            .padding(bottom = 16.dp)
-      )
-
-      // Name
-      Text(
-         text = "John Doe",
-         style = MaterialTheme.typography.bodyMedium,
-         fontWeight = FontWeight.Bold,
-         modifier = Modifier.padding(bottom = 8.dp)
-      )
-
-      // Age
-      Text(
-         text = "Age: 30",
-         style = MaterialTheme.typography.bodyMedium,
-         color = MaterialTheme.colorScheme.onSurface.copy(alpha = ContentAlpha.medium)
+            .padding(16.dp)
+            .fillMaxWidth()
+            .wrapContentHeight()
       )
    }
-}
 
-@Composable
-fun ProfileImage(selectedImageUri: String?, onImageSelected: (String) -> Unit, modifier: Modifier = Modifier) {
-   val context = LocalContext.current
-
-   Box(
-      modifier = modifier
-         .clip(CircleShape)
-         .background(MaterialTheme.colorScheme.primary)
-         .border(2.dp, MaterialTheme.colorScheme.onPrimary, CircleShape)
-   ) {
-      if (selectedImageUri != null) {
-         // Display the selected image
-         Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-               .fillMaxSize()
-               .clickable {
-                  // Handle image click for selected image
-                  // You can open a larger preview or perform other actions here
-               }
-         )
-      } else {
-         // Display a default icon with the option to select an image
-         Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
-            contentDescription = null,
-            modifier = Modifier
-               .fillMaxSize()
-               .clickable {
-                  // Handle image click to select a new image
-                  // You can open a file picker or gallery intent here
-                  // After selecting an image, call onImageSelected with the new URI
-                  // Example: onImageSelected(newImageUri)
-               }
-         )
-      }
+   @Composable
+   fun PhotoGallery() {
+      // Your photo gallery code goes here
    }
-}
+
+

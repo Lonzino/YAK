@@ -55,7 +55,7 @@ fun FamillyList(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("우리 가좍", fontFamily = cafe24ssurround) },
+                title = { Text("우리 가좍", fontFamily = cafe24ssurround, color = MaterialTheme.colorScheme.tertiaryContainer) },
                 actions = {
                     IconButton(
                         onClick = { },
@@ -89,6 +89,8 @@ fun FamillyList(navController: NavController) {
         },
         bottomBar = {
             BottomAppBar(
+                contentColor = MaterialTheme.colorScheme.tertiaryContainer,
+                containerColor = MaterialTheme.colorScheme.tertiary,
                 content = {
                     Row(
                         horizontalArrangement = Arrangement.SpaceAround,

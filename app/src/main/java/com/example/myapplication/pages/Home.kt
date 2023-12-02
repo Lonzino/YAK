@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -74,16 +73,30 @@ fun Home(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(modifier = Modifier
-                .shadow(15.dp, shapes.extraLarge)
-                .background(colorScheme.tertiary, shapes.large)
-                ,
-                title = {
-                    Text("삐약:                           ", fontFamily = cafe24ssurround, color = colorScheme.primaryContainer)
+                ,title = {
+                    Row {
+                        Text(
+                            "삐약! ",
+                            fontFamily = cafe24ssurround,
+                            color = colorScheme.tertiaryContainer
+                        )
+
+                        Text(
+                            "엄마 4 ",
+                            fontFamily = cafe24ssurround,
+                            color = colorScheme.tertiaryContainer,
+                        )
+                        Text(
+                            "아빠 0 ",
+                            fontFamily = cafe24ssurround,
+                            color = colorScheme.tertiaryContainer
+                        )
+                    }
 
                 },
                 actions = {
-                    IconButton(onClick = { /* 캘린더 아이콘 버튼이 눌렸을 때의 동작 추가 */ }) {
-                        Icon(Icons.Default.DateRange, contentDescription = null)
+                    IconButton(onClick = { /*isCalendarVisible = true*/ }) {
+                        Icon(Icons.Default.DateRange, contentDescription = null, tint = colorScheme.tertiaryContainer)
                     }
                 }
             )
@@ -94,7 +107,7 @@ fun Home(navController: NavController) {
                     .fillMaxSize()
                     .wrapContentSize(Alignment.Center)
                     .padding(16.dp)
-                    .border(5.dp, colorScheme.primaryContainer, shapes.large)
+                    .border(5.dp, colorScheme.tertiary, shapes.large)
                     .aspectRatio(1f)
             ) {
                 MedicineList(medicineList = medicineList,
@@ -118,10 +131,8 @@ fun Home(navController: NavController) {
         },
         bottomBar = {
             BottomAppBar(
-                contentColor = colorScheme.tertiary,
-                containerColor = colorScheme.tertiary,
-                modifier = Modifier.shadow(15.dp, shapes.extraLarge)
-                    .width(400.dp)
+                contentColor = colorScheme.tertiaryContainer,
+                containerColor = colorScheme.tertiary
             ) {
                 Row(
                     horizontalArrangement = Arrangement.SpaceAround,
@@ -310,9 +321,4 @@ fun MedicineList(medicineList: List<Medicine>, modifier: Modifier = Modifier) {
             }
         }
     }
-}
-
-@Composable
-fun AnotherComposable() {
-    // 추가적인 컴포저블을 여기에 추가할 수 있습니다.
 }
